@@ -25,7 +25,8 @@ namespace FluentMigrator.ServiceStack
 
         public object Get(VersionInfo request)
         {
-            var availableMigrations = Assembly.GetExecutingAssembly().GetTypes()
+            var availableMigrations = (MigrationFeature.Assemblies ?? Enumerable.Empty<Assembly>())
+                .SelectMany(a => a.GetTypes())
                 .Where(t => t.IsDefined(typeof(MigrationAttribute), true))
                 .Select(t =>
                 {
@@ -58,11 +59,15 @@ namespace FluentMigrator.ServiceStack
 
         public void Post(Migrate request)
         {
-            var writer = new StreamWriter(Response.OutputStream) { AutoFlush = true };
+            //var writer = new StreamWriter(Response.OutputStream) { AutoFlush = true };
+            var writer = new StringWriter();
             
             Migrate(writer, request.PreviewOnly, false, request.Version);
 
             writer.Flush();
+
+            var s = writer.ToString();
+            s.ToString();
         }
 
         public void Delete(Migrate request)
@@ -84,7 +89,7 @@ namespace FluentMigrator.ServiceStack
             using (var con = Database.OpenDbConnection())
             {
                 connectionString = con.ConnectionString;
-                highestMigration = con.Scalar<long>("SELECT MAX(Version) from VersionInfo");
+                highestMigration = con.TableExists("VersionInfo") ? con.Scalar<long>("SELECT MAX(Version) from VersionInfo") : -1;
             }
 
             if (rollback)
@@ -104,7 +109,8 @@ namespace FluentMigrator.ServiceStack
 
             var context = new RunnerContext(announcer)
             {
-                Database = "sqlserver",
+                //Database = "sqlserver",
+                Database = "sqlite",
                 Connection = connectionString,
                 Target = Assembly.GetExecutingAssembly().Location,
                 PreviewOnly = previewOnly,

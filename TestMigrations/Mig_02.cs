@@ -5,7 +5,7 @@ using System.Text;
 
 namespace TestMigrations
 {
-    public class Mig_01
+    public class Mig_02
     {
     }
 }

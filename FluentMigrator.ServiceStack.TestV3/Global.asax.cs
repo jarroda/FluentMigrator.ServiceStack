@@ -9,6 +9,8 @@ using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
 using ServiceStack.WebHost.Endpoints;
 using ServiceStack.OrmLite;
+using System.Data.SQLite;
+using System.IO;
 
 namespace FluentMigrator.ServiceStack.TestV3
 {
@@ -43,9 +45,13 @@ namespace FluentMigrator.ServiceStack.TestV3
 
             public override void Configure(Funq.Container container)
             {
-                Plugins.Add(new MigrationFeature());
+                var dbPath = Path.Combine(AppDomain.CurrentDomain.GetData("DataDirectory").ToString(), "test.db");
+                File.Delete(dbPath);
 
-                container.Register<IDbConnectionFactory>(new OrmLiteConnectionFactory(":memory:", false, SqliteDialect.Provider));
+                SQLiteConnection.CreateFile(dbPath);
+                Plugins.Add(new MigrationFeature(typeof(TestMigrations.Mig_01).Assembly));
+
+                container.Register<IDbConnectionFactory>(new OrmLiteConnectionFactory("Data Source=" + dbPath + ";Version=3;", false, SqliteDialect.Provider));
             }
         }
 

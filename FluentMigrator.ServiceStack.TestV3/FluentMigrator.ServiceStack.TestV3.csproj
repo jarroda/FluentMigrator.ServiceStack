@@ -45,6 +45,10 @@
     <Reference Include="EntityFramework.SqlServer">
       <HintPath>..\packages\EntityFramework.6.1.0\lib\net40\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="FluentMigrator, Version=1.1.2.1, Culture=neutral, PublicKeyToken=aacfc7de5acabf05, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\FluentMigrator.1.1.2.1\lib\40\FluentMigrator.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="ServiceStack">
       <HintPath>..\packages\ServiceStack.3.9.71\lib\net35\ServiceStack.dll</HintPath>
@@ -171,7 +175,9 @@
       <DependentUpon>Web.config</DependentUpon>
     </Content>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>
@@ -179,6 +185,10 @@
     <ProjectReference Include="..\FluentMigrator.ServiceStack\FluentMigrator.ServiceStack.csproj">
       <Project>{eecb9d59-a33e-426b-9c8e-188ff69f9446}</Project>
       <Name>FluentMigrator.ServiceStack</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TestMigrations\TestMigrations.csproj">
+      <Project>{b63a71a3-7562-44b4-979e-6844ee32c28e}</Project>
+      <Name>TestMigrations</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
