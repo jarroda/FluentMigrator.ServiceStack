@@ -1,5 +1,209 @@
-﻿<html>
-<body>
-    Hello world!
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="../../assets/ico/favicon.ico">
+
+    <title>Jumbotron Template for Bootstrap</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+
+    <style>
+        #migOutputWell .glyphicon {
+            float: right;
+            margin: 32px 3px 0px 0px;
+            cursor: pointer;
+        }
+        #migOutputWell h2 {
+            float: left;
+        }
+        #migOutputWell .well {
+            white-space: pre-wrap; /* css-3 */
+            white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+            white-space: -pre-wrap; /* Opera 4-6 */
+            white-space: -o-pre-wrap; /* Opera 7 */
+            word-wrap: break-word; /* Internet Explorer 5.5+ */
+            height: 500px;
+            overflow: auto;
+            overflow-y: scroll;
+        }
+        #migListTable th {
+            text-align: center;
+        }
+        #migAvailableMigrations .applyAllButton {
+            float: right;
+            margin-top: 20px;
+        }
+        #migAvailableMigrations .applyAllButton .badge {
+            margin-left: 5px;
+        }
+        #migAvailableMigrations h2 {
+            float: left;
+        } 
+        #migListTable .migTableCenter {
+            text-align: center;
+        }
+        #migOptionsPanel h3 {
+            margin: 0px 5px 0px 0px;
+            display: inline-block;
+        }
+        #migOptionsPanel #migSelectToggle {
+        }
+        #migTimeoutSelect {
+            display: inline-block;
+            width: 200px;
+        } 
+        .migOptionBlock {
+            margin-left: 18px;
+            float: left;
+        } 
+        .clear {
+            clear: both;
+        }
+        .nav, .pagination, .carousel, .panel-title a {
+            cursor: pointer;
+        }
+    </style>
+    <script type="text/javascript" src="javascript/angular.min.js"></script>
+</head>
+
+<body ng-app="myApp" ng-controller="MigrationCtrl">
+
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">Project name</a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <form class="navbar-form navbar-right" role="form">
+                    <div class="form-group">
+                        <input type="text" placeholder="Email" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <input type="password" placeholder="Password" class="form-control">
+                    </div>
+                    <button type="submit" class="btn btn-success">Sign in</button>
+                </form>
+            </div><!--/.navbar-collapse -->
+        </div>
+    </div>
+
+    <!-- Main jumbotron for a primary marketing message or call to action -->
+    <div class="jumbotron">
+        <div class="container">
+            <h1>FluentMigrator Dashboard</h1>
+            <p>A ServiceStack plugin providing an interface for FluentMigrator database migrations.</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Example row of columns -->
+        <div class="row">
+            <div ng-if="info.length" class="alert alert-warning" ng-bind="info"></div>
+
+            <div id="migOptionsPanel" class="panel panel-default">
+                <div class="panel-body">
+                    
+                    <div class="migOptionBlock">
+                        <h3>Migration Mode:</h3>
+                        <div class="btn-group" id="migSelectToggle">
+                            <button type="button" class="btn btn-default" ng-click="updatePreviewSelection(1)" ng-class="{'btn-danger active': previewSelection}">Preview</button>
+                            <button type="button" class="btn btn-default" ng-click="updatePreviewSelection(0)" ng-class="{'btn-danger active': !previewSelection}">Live</button>
+                        </div>
+                    </div>
+
+                    <div class="migOptionBlock">
+                        <h3>Timeout:</h3>
+                        <select id="migTimeoutSelect" class="form-control" ng-model="timeOut">
+                            <option value="1">1 Minute</option>
+                            <option value="2">2 Minutes</option>
+                            <option value="3">3 Minutes</option>
+                            <option value="5">5 Minutes</option>
+                            <option value="8">8 Minutes</option>
+                            <option value="13">13 Minutes</option>
+                            <option value="21">21 Minutes</option>
+                            <option value="34">34 Minutes</option>
+                            <option value="55">55 Minutes</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div id="migAvailableMigrations" class="col-md-8">
+                <button class="applyAllButton btn btn-primary" ng-click="ApplyMigration()" ng-if="UnAppliedMigrationCount">Apply All <span class="badge" ng-bind="UnAppliedMigrationCount"></span></button>
+                <h2>Available Migrations</h2>
+                <div class="table-responsive">
+                    <table id="migListTable" class="table table-striped table-bordered table-condensed">
+                        <thead>
+                            <!--<tr>
+                        <th>Migrations</th>
+                        <th>Search: <input type="text" ng-model="searchText"></th>
+                        <th>Set time out: <input type="text" ng-model="timeOut"></th>
+                    </tr>-->
+                            <tr>
+                                <th>#</th>
+                                <th>AppliedOn</th>
+                                <th>Description</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        	<tr ng-if="m.migrations"><td>TEST</td></tr>
+                            <tr ng-repeat="m in migrations | orderBy:'-Version' | startFrom:currentPage*itemsPerPage-itemsPerPage | limitTo:itemsPerPage | filter:searchText " ng-class="{success: m.applied}">
+                                <td class="migTableCenter" ng-bind="m.Version"></td>
+                                <td ng-bind="m.AppliedOn  | dateFormat:'MM-dd-yyyy hh:mm a'"></td>
+                                <td ng-bind="m.Description"></td>
+                                <td class="migTableCenter"><button class="btn btn-default btn-xs" ng-click="ApplyMigration(m)" ng-if="m.avaliable">Apply</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div>
+                        <pagination items-per-page="itemsPerPage" total-items="totalItems" ng-model="currentPage" max-size="maxSize" class="pagination-sm" boundary-links="true"></pagination>
+                    </div>
+                </div>
+            </div>
+            <div id="migOutputWell" class="col-md-4">
+                <span alt="Clear Output" class="glyphicon glyphicon-ban-circle" ng-click="ClearOutput();"></span>
+                <h2>Console Output</h2>
+                <div class="clear"></div>
+                <p scroll-glue class="well" ng-bind-html="output"></p>
+            </div>
+        </div>
+
+        <hr>
+
+        <footer>
+            <p>&copy; Company 2014</p>
+        </footer>
+    </div> <!-- /container -->
+    
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script type="text/javascript" src="/javascript/app.js"></script>
+    <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.11.0.js"></script>
+    <script src="//rawgithub.com/Luegg/angularjs-scroll-glue/master/src/scrollglue.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.16/angular-sanitize.js"></script>
+
+    <script>
+        //function loop() {
+        //    setTimeout(function () {
+        //        var angularApp = angular.element(document.getElementsByTagName("body")).scope();
+        //        angularApp.appendOutput("test");
+        //        loop();
+        //    }, 1000);
+        //}
+        //loop();
+    </script>
+
 </body>
 </html>
