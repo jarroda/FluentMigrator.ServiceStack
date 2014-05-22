@@ -13,6 +13,8 @@ namespace FluentMigrator.ServiceStack
 {
     public sealed class MigrationFeature : IPlugin
     {
+        private const string PathPrefix = "/migrations/ui";
+
         public MigrationFeature(Assembly migrationAssembly)
         {
             MigrationService.Assembly = migrationAssembly;
@@ -22,21 +24,18 @@ namespace FluentMigrator.ServiceStack
         {
             appHost.RegisterService<MigrationService>();
 
-            //appHost.CatchAllHandlers.Add(new HttpHandlerResolverDelegate(
             appHost.CatchAllHandlers.Add((httpMethod, pathInfo, filePath) =>
             {
-                if (pathInfo == "/migrations/ui" || pathInfo == "/migrations/ui/" || pathInfo == "/migrations/ui/default.html")
+                if (pathInfo.StartsWith(PathPrefix))
                 {
-                    
-                    //return new EndpointHandlerBase
-                    //return new StaticFileHandler();
+                    var path = pathInfo.Substring(PathPrefix.Length).TrimStart('/');
 
-
-                    var indexFile = appHost.VirtualPathProvider.GetFile("/bin/Content/index.html");
-                    if (indexFile != null)
+                    if (path.Length == 0)
                     {
-                        return new VirtualFileHandler(indexFile);
+                        path = "content/index.html";
                     }
+
+                    return new EmbeddedFileHandler(path);
                 }
                 return null;
             });

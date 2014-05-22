@@ -11,6 +11,8 @@ using ServiceStack.WebHost.Endpoints;
 using ServiceStack.OrmLite;
 using System.Data.SQLite;
 using System.IO;
+using ServiceStack.Api.Postman;
+using ServiceStack.ServiceInterface.Cors;
 
 namespace FluentMigrator.ServiceStack.TestV3
 {
@@ -31,6 +33,8 @@ namespace FluentMigrator.ServiceStack.TestV3
                     SQLiteConnection.CreateFile(dbPath);
                 }
 
+                Plugins.Add(new CorsFeature());
+                Plugins.Add(new PostmanFeature());
                 Plugins.Add(new MigrationFeature(typeof(TestMigrations.Mig_01).Assembly));
                 
                 container.Register<IDbConnectionFactory>(new OrmLiteConnectionFactory("Data Source=" + dbPath + ";Version=3;", false, SqliteDialect.Provider));

@@ -53,6 +53,9 @@
     <Reference Include="ServiceStack">
       <HintPath>..\packages\ServiceStack.3.9.71\lib\net35\ServiceStack.dll</HintPath>
     </Reference>
+    <Reference Include="ServiceStack.Api.Postman">
+      <HintPath>..\packages\ServiceStack.Api.Postman.1.0.0.1\lib\net35\ServiceStack.Api.Postman.dll</HintPath>
+    </Reference>
     <Reference Include="ServiceStack.Common">
       <HintPath>..\packages\ServiceStack.Common.3.9.71\lib\net35\ServiceStack.Common.dll</HintPath>
     </Reference>
