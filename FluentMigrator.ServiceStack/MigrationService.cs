@@ -25,7 +25,12 @@ namespace FluentMigrator.ServiceStack
                 .Select(t =>
                 {
                     var m = (MigrationAttribute)t.GetCustomAttributes(typeof(MigrationAttribute), true).First();
-                    return new VersionInfo { Description = m.Description ?? t.Name, Version = m.Version };
+                    return new VersionInfo 
+                    { 
+                        Description = m.Description ?? t.Name, 
+                        Version = m.Version,
+                        IsAvailable = true,
+                    };
                 })
                 .ToList();
 
@@ -44,8 +49,20 @@ namespace FluentMigrator.ServiceStack
 
                 return new VersionInfoResponse
                 {
-                    Migrations = appliedMigrations.Union(availableMigrations).OrderByDescending(v => v.Version).ToList(),
+                    Migrations = appliedMigrations
+                        .Concat(availableMigrations)
+                        .ToLookup(v => v.Version)
+                        .Select(g => g.Aggregate((v1, v2) => new VersionInfo
+                        {
+                            Version = v1.Version,
+                            Description = v1.Description ?? v2.Description,
+                            AppliedOn = v1.AppliedOn ?? v2.AppliedOn,
+                            IsAvailable = v1.IsAvailable || v2.IsAvailable,
+                        }))
+                        .OrderByDescending(v => v.Version)
+                        .ToList(),
                     Info = appliedMigrations.Except(availableMigrations).Any() ? "Warning: Database has migrations applied that are not available in the current migration assembly.  Rollback may not be possible." : null,
+                    Database = con.Database,
                 };
             }            
         }

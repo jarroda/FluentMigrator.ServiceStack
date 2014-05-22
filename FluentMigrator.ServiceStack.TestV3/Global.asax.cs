@@ -25,9 +25,12 @@ namespace FluentMigrator.ServiceStack.TestV3
             public override void Configure(Funq.Container container)
             {
                 var dbPath = Path.Combine(AppDomain.CurrentDomain.GetData("DataDirectory").ToString(), "test.db");
-                //File.Delete(dbPath);
 
-                //SQLiteConnection.CreateFile(dbPath);
+                if (!File.Exists(dbPath))
+                {
+                    SQLiteConnection.CreateFile(dbPath);
+                }
+
                 Plugins.Add(new MigrationFeature(typeof(TestMigrations.Mig_01).Assembly));
                 
                 container.Register<IDbConnectionFactory>(new OrmLiteConnectionFactory("Data Source=" + dbPath + ";Version=3;", false, SqliteDialect.Provider));

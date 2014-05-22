@@ -23,25 +23,23 @@ namespace FluentMigrator.ServiceStack
             appHost.RegisterService<MigrationService>();
 
             //appHost.CatchAllHandlers.Add(new HttpHandlerResolverDelegate(
-            //appHost.CatchAllHandlers.Add((httpMethod, pathInfo, filePath) =>
-            //{
-            //    if (pathInfo == "/migrator-ui" || pathInfo == "/migrator-ui/" || pathInfo == "/migrator-ui/default.html")
-            //    {
-            //        var indexFile = appHost.VirtualPathProvider.GetFile("/Content/index.html");
-            //        if (indexFile != null)
-            //        {
-            //            var html = indexFile.ReadAllText();
-                        
-                        
-            //            //return new CustomResponseHandler((req, res) =>
-            //            //{
-            //            //    res.ContentType = MimeTypes.Html;
-            //            //    return html;
-            //            //});
-            //        }
-            //    }
-            //    return null;
-            //});
+            appHost.CatchAllHandlers.Add((httpMethod, pathInfo, filePath) =>
+            {
+                if (pathInfo == "/migrations/ui" || pathInfo == "/migrations/ui/" || pathInfo == "/migrations/ui/default.html")
+                {
+                    
+                    //return new EndpointHandlerBase
+                    //return new StaticFileHandler();
+
+
+                    var indexFile = appHost.VirtualPathProvider.GetFile("/bin/Content/index.html");
+                    if (indexFile != null)
+                    {
+                        return new VirtualFileHandler(indexFile);
+                    }
+                }
+                return null;
+            });
         }
     }
 }

@@ -10,5 +10,7 @@ namespace FluentMigrator.ServiceStack.ServiceModel
         public string Info { get; set; }
 
         public ResponseStatus ResponseStatus { get; set; }
+
+        public string Database { get; set; }
     }
 }
