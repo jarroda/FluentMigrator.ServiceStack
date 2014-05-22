@@ -85,6 +85,13 @@
     <Content Include="Content\index.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\index.html" />
+    <Content Include="Content\javascript\angular.min.js" />
+    <Content Include="Content\javascript\app.js" />
+    <Content Include="Content\javascript\ui-bootstrap-0.11.0.min.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Content\css\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
