@@ -1,32 +1,26 @@
-﻿using FluentMigrator;
-using FluentMigrator.Runner.Announcers;
+﻿using FluentMigrator.Runner.Announcers;
 using FluentMigrator.Runner.Initialization;
 using FluentMigrator.ServiceStack.ServiceModel;
-using ServiceStack.Common.Web;
 using ServiceStack.OrmLite;
-using ServiceStack.Service;
 using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 
 namespace FluentMigrator.ServiceStack
 {
     [Restrict(LocalhostOnly=true)]
     public class MigrationService : Service
     {
-        private static MigrationComparer _comparer = new MigrationComparer();
+        internal static Assembly Assembly { get; set; }
 
         public IDbConnectionFactory Database { get; set; }
 
         public object Get(VersionInfo request)
         {
-            var availableMigrations = (MigrationFeature.Assemblies ?? Enumerable.Empty<Assembly>())
-                .SelectMany(a => a.GetTypes())
+            var availableMigrations = Assembly.GetTypes()
                 .Where(t => t.IsDefined(typeof(MigrationAttribute), true))
                 .Select(t =>
                 {
@@ -50,14 +44,13 @@ namespace FluentMigrator.ServiceStack
 
                 return new VersionInfoResponse
                 {
-                    AppliedMigrations = appliedMigrations,
-                    AvailableMigrations = availableMigrations,
-                    Info = appliedMigrations.Except(availableMigrations).Any() ? "Warning: Database has migrations applied that are not available in the current migration assembly.  Rollback may not be possible." : string.Empty,
+                    Migrations = appliedMigrations.Union(availableMigrations).OrderByDescending(v => v.Version).ToList(),
+                    Info = appliedMigrations.Except(availableMigrations).Any() ? "Warning: Database has migrations applied that are not available in the current migration assembly.  Rollback may not be possible." : null,
                 };
             }            
         }
 
-        public void Post(Migrate request)
+        public object Post(Migrate request)
         {
             //var writer = new StreamWriter(Response.OutputStream) { AutoFlush = true };
             var writer = new StringWriter();
@@ -67,7 +60,7 @@ namespace FluentMigrator.ServiceStack
             writer.Flush();
 
             var s = writer.ToString();
-            s.ToString();
+            return s.ToString();
         }
 
         public void Delete(Migrate request)
@@ -83,14 +76,14 @@ namespace FluentMigrator.ServiceStack
         {
             string connectionString;
             long highestMigration;
-            string task;
+            string task, database;
 
-            // Is there a better way of getting the connection string without opening up a connection?
             using (var con = Database.OpenDbConnection())
             {
+                database = DialectToDatabaseString(con.GetDialectProvider());
                 connectionString = con.ConnectionString;
                 highestMigration = con.TableExists("VersionInfo") ? con.Scalar<long>("SELECT MAX(Version) from VersionInfo") : -1;
-            }
+            }            
 
             if (rollback)
             {
@@ -109,10 +102,9 @@ namespace FluentMigrator.ServiceStack
 
             var context = new RunnerContext(announcer)
             {
-                //Database = "sqlserver",
-                Database = "sqlite",
+                Database = database,
                 Connection = connectionString,
-                Target = Assembly.GetExecutingAssembly().Location,
+                Target = Assembly.Location,
                 PreviewOnly = previewOnly,
                 Task = task,
                 Version = version ?? 0,
@@ -121,16 +113,14 @@ namespace FluentMigrator.ServiceStack
             new TaskExecutor(context).Execute();
         }
 
-        private class MigrationComparer : IEqualityComparer<VersionInfo>
+        private string DialectToDatabaseString(IOrmLiteDialectProvider provider)
         {
-            public bool Equals(VersionInfo x, VersionInfo y)
+            switch (provider.GetType().Name)
             {
-                return x.Version == y.Version;
-            }
-
-            public int GetHashCode(VersionInfo obj)
-            {
-                return obj.Version.GetHashCode();
+                case "SqliteOrmLiteDialectProvider":
+                    return "sqlite";
+                default:
+                    return "sqlserver";
             }
         }
     }

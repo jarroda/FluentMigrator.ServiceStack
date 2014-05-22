@@ -12,5 +12,15 @@ namespace FluentMigrator.ServiceStack.ServiceModel
         public DateTime? AppliedOn { get; set; }
 
         public string Description { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            return Version == ((VersionInfo)obj).Version;
+        }
+
+        public override int GetHashCode()
+        {
+            return (Version ?? 0).GetHashCode();
+        }
     }
 }
