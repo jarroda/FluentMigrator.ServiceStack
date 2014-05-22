@@ -57,6 +57,8 @@ namespace FluentMigrator.ServiceStack
                 }
                 else
                 {
+                    // TODO: Figure out the best way to enable browser caching of this static content.
+                    response.AddHeader(HttpHeaders.CacheControl, "max-age=" + TimeSpan.FromDays(5).TotalSeconds);
                     response.SetContentLength(stream.Length);
                     stream.CopyTo(response.OutputStream);
                     response.OutputStream.Flush();

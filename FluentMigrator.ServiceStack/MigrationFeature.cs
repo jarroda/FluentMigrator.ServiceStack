@@ -27,7 +27,7 @@ namespace FluentMigrator.ServiceStack
             appHost.CatchAllHandlers.Add((httpMethod, pathInfo, filePath) =>
             {
                 if (pathInfo.StartsWith(PathPrefix))
-                {
+                {                    
                     var path = pathInfo.Substring(PathPrefix.Length).TrimStart('/');
 
                     if (path.Length == 0)

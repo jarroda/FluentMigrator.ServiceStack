@@ -67,26 +67,23 @@ namespace FluentMigrator.ServiceStack
             }            
         }
 
-        public object Post(Migrate request)
+        public void Post(Migrate request)
         {
-            //var writer = new StreamWriter(Response.OutputStream) { AutoFlush = true };
-            var writer = new StringWriter();
-            
-            Migrate(writer, request.PreviewOnly, false, request.Version);
-
-            writer.Flush();
-
-            var s = writer.ToString();
-            return s.ToString();
+            using (var writer = new StreamWriter(Response.OutputStream) { AutoFlush = true })
+            {
+                Migrate(writer, request.PreviewOnly, false, request.Version);                
+            }
+            Response.Close();
         }
 
         public void Delete(Migrate request)
         {
-            var writer = new StreamWriter(Response.OutputStream) { AutoFlush = true };
+            using (var writer = new StreamWriter(Response.OutputStream) { AutoFlush = true })
+            {
+                Migrate(writer, request.PreviewOnly, true, request.Version);
+            }
 
-            Migrate(writer, request.PreviewOnly, true, request.Version);
-
-            writer.Flush();
+            Response.Close();
         }
 
         private void Migrate(TextWriter writer, bool previewOnly, bool rollback, long? version = null)

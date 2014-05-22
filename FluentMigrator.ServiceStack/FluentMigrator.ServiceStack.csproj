@@ -83,6 +83,12 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="content\index.html" />
+    <EmbeddedResource Include="content\javascript\angular.min.js" />
+    <EmbeddedResource Include="content\javascript\app.js" />
+    <EmbeddedResource Include="content\javascript\ui-bootstrap-0.11.0.min.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="content\css\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
