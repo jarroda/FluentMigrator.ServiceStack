@@ -14,5 +14,15 @@ namespace FluentMigrator.ServiceStack.ServiceModel
         public string Description { get; set; }
 
         public bool IsAvailable { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            return Version == ((MigrationInfo)obj).Version;
+        }
+
+        public override int GetHashCode()
+        {
+            return (Version ?? 0).GetHashCode();
+        }
     }
 }
