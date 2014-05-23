@@ -42,15 +42,13 @@ myApp.controller('MigrationCtrl', function ($scope, $http) {
 
             $scope.info = data.Info;
             $scope.connectedDatabase = data.Database;
-            $scope.migrations = migrations;
 
-            $scope.totalItems = migrations.length;
+            $scope.migrations = data.Migrations;
+            $scope.totalItems = data.Migrations.length;
 
-            var AppliedCount = 0;
-            for (k in migrations) {
-                if (migrations[k]["AppliedOn"] === undefined) AppliedCount++;
-            }
-            $scope.UnAppliedMigrationCount = AppliedCount;
+            $scope.UnAppliedMigrationCount = data.Migrations.reduce(function (total, mig) {
+                return mig.AppliedOn ? total + 1 : total;
+            }, 0);
         }).
         error(function (data, status, headers, config) {
             console.log(data);
