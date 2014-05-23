@@ -9,6 +9,8 @@ myApp.controller('MigrationCtrl', function ($scope, $http) {
     $scope.output = "";
     $scope.UnAppliedMigrationCount = 0;
     $scope.previewSelection = 1;
+    $scope.displayConnStringOption = 0;
+    $scope.customDatabaseConnString = null;
 
     $scope.timeOut = 5;
 
@@ -33,6 +35,14 @@ myApp.controller('MigrationCtrl', function ($scope, $http) {
     $scope.updatePreviewSelection = function (bool) {
         $scope.previewSelection = bool;
     };
+    $scope.showConnStringPanel = function () {
+        $scope.displayConnStringOption = !$scope.displayConnStringOption;
+    };
+    $scope.applyCustomDatabaseConnString = function () {
+        // TODO: Figure out how to wedge the connection string into the getMigration() requests
+        alert($scope.customDatabaseConnString);
+        $scope.getMigrations();
+    };
 
 
     $scope.getMigrations = function () {
@@ -42,12 +52,13 @@ myApp.controller('MigrationCtrl', function ($scope, $http) {
 
             $scope.info = data.Info;
             $scope.connectedDatabase = data.Database;
+            $scope.connectedDatabaseString = "Connected to <strong>" + data.Database + "</strong> database";
 
             $scope.migrations = data.Migrations;
             $scope.totalItems = data.Migrations.length;
 
             $scope.UnAppliedMigrationCount = data.Migrations.reduce(function (total, mig) {
-                return mig.AppliedOn ? total + 1 : total;
+                return mig.AppliedOn ? total : total + 1;
             }, 0);
         }).
         error(function (data, status, headers, config) {
@@ -55,7 +66,7 @@ myApp.controller('MigrationCtrl', function ($scope, $http) {
         });
     }
 
-    $scope.ApplyMigration = function (migration) {
+    $scope.ApplyMigration = function (migration, options) {
         var requestURL;
 
         if (migration != null)
@@ -71,17 +82,28 @@ myApp.controller('MigrationCtrl', function ($scope, $http) {
         migration.TimeOut = $scope.timeOut * 60;
         migration.PreviewOnly = $scope.previewSelection;
 
-        console.log("Begining migration to " + ((migration.Version) ? "VERSION " + migration.Version : "HEAD" ) + " in " + ((migration.PreviewOnly) ? "PREVIEW" : "LIVE") + " mode with a " + migration.TimeOut + " second timeout.");
-
-        $http.post(requestURL, migration).
-        success(function (data, status, headers, config) {
-            $scope.output = data;
-            $scope.getMigrations();
-        }).
-        error(function (data, status, headers, config) {
-            $scope.output = data;
-            $scope.getMigrations();
-        });
+        if (options == "rollback") {
+            console.log("Begining ROLLBACK in " + ((migration.PreviewOnly) ? "PREVIEW" : "LIVE") + " mode with a " + migration.TimeOut + " second timeout.");
+            $http.delete(requestURL, migration).
+            success(function (data, status, headers, config) {
+                $scope.output = data;
+                $scope.getMigrations();
+            }).error(function (data, status, headers, config) {
+                $scope.output = data;
+                $scope.getMigrations();
+            });
+        }
+        else {
+            console.log("Begining migration to " + ((migration.Version) ? "VERSION " + migration.Version : "HEAD") + " in " + ((migration.PreviewOnly) ? "PREVIEW" : "LIVE") + " mode with a " + migration.TimeOut + " second timeout.");
+            $http.post(requestURL, migration).
+            success(function (data, status, headers, config) {
+                $scope.output = data;
+                $scope.getMigrations();
+            }).error(function (data, status, headers, config) {
+                $scope.output = data;
+                $scope.getMigrations();
+            });
+        }
     }
 
     $scope.ClearOutput = function () {
