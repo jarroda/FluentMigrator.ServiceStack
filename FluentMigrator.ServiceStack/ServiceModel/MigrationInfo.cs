@@ -4,8 +4,8 @@ using System;
 
 namespace FluentMigrator.ServiceStack.ServiceModel
 {
-    [Route("/migrations", "GET")]
-    public class VersionInfo : IReturn<VersionInfoResponse>
+    [Alias("VersionInfo")]
+    public class MigrationInfo : IReturn<MigrationInfoResponse>
     {
         public long? Version { get; set; }
 
@@ -14,15 +14,5 @@ namespace FluentMigrator.ServiceStack.ServiceModel
         public string Description { get; set; }
 
         public bool IsAvailable { get; set; }
-
-        public override bool Equals(object obj)
-        {
-            return Version == ((VersionInfo)obj).Version;
-        }
-
-        public override int GetHashCode()
-        {
-            return (Version ?? 0).GetHashCode();
-        }
     }
 }

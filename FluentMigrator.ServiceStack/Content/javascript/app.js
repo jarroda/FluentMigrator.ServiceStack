@@ -45,7 +45,7 @@ myApp.controller('MigrationCtrl', function ($scope, $http) {
 
     $scope.getMigrations = function () {
         //TODO: Use a post here if we are using a custom database connection string
-        $http.get(baseUrl).
+        $http.get(baseUrl, { params: { connectionString: $scope.customDatabaseConnString } }).
         success(function (data, status, headers, config) {
             var migrations = data.Migrations;
 
@@ -78,7 +78,7 @@ myApp.controller('MigrationCtrl', function ($scope, $http) {
             requestURL = baseUrl;
         }
 
-        migration.TimeOut = $scope.timeOut * 60;
+        migration.TimeoutSeconds = $scope.timeOut * 60;
         migration.PreviewOnly = $scope.previewSelection;
         migration.ConnectionString = $scope.customDatabaseConnString;
 

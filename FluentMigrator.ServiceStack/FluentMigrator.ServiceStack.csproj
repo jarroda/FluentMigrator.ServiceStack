@@ -74,9 +74,10 @@
     <Compile Include="MigrationFeature.cs" />
     <Compile Include="MigrationService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServiceModel\GetMigrations.cs" />
     <Compile Include="ServiceModel\Migrate.cs" />
-    <Compile Include="ServiceModel\VersionInfo.cs" />
-    <Compile Include="ServiceModel\VersionInfoResponse.cs" />
+    <Compile Include="ServiceModel\MigrationInfo.cs" />
+    <Compile Include="ServiceModel\MigrationInfoResponse.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="content\fonts\glyphicons-halflings-regular.eot" />

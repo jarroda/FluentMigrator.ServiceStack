@@ -165,7 +165,7 @@
 
             <div id="migAvailableMigrations" class="col-md-5">
                 <button class="applyAllButton btn btn-primary" ng-click="ApplyMigration()" ng-if="UnAppliedMigrationCount">Apply All <span class="badge" ng-bind="UnAppliedMigrationCount"></span></button>
-                <button class="applyRollback btn btn-default" ng-if="!previewSelection" ng-click="ApplyMigration(null, 'rollback')">Roll Back</button>
+                <button class="applyRollback btn btn-default" ng-if="!previewSelection && (totalItems - UnAppliedMigrationCount > 0)" ng-click="ApplyMigration(null, 'rollback')">Roll Back</button>
                 <h2>Available Migrations</h2>
                 <div class="table-responsive">
                     <table id="migListTable" class="table table-bordered table-condensed">

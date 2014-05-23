@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace FluentMigrator.ServiceStack.ServiceModel
 {
-    public sealed class VersionInfoResponse : IHasResponseStatus
+    public sealed class MigrationInfoResponse : IHasResponseStatus
     {
-        public List<VersionInfo> Migrations { get; set; }
+        public List<MigrationInfo> Migrations { get; set; }
 
         public string Info { get; set; }
 

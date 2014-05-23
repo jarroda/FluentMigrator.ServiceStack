@@ -5,6 +5,7 @@ using ServiceStack.OrmLite;
 using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -18,14 +19,14 @@ namespace FluentMigrator.ServiceStack
 
         public IDbConnectionFactory Database { get; set; }
 
-        public object Get(VersionInfo request)
+        public object Get(GetMigrations request)
         {
             var availableMigrations = Assembly.GetTypes()
                 .Where(t => t.IsDefined(typeof(MigrationAttribute), true))
                 .Select(t =>
                 {
                     var m = (MigrationAttribute)t.GetCustomAttributes(typeof(MigrationAttribute), true).First();
-                    return new VersionInfo 
+                    return new MigrationInfo 
                     { 
                         Description = m.Description ?? t.Name, 
                         Version = m.Version,
@@ -34,25 +35,25 @@ namespace FluentMigrator.ServiceStack
                 })
                 .ToList();
 
-            using(var con = Database.OpenDbConnection())
+            using (var con = string.IsNullOrEmpty(request.ConnectionString) ? Database.OpenDbConnection() : OpenConnection(request.ConnectionString))
             {
-                List<VersionInfo> appliedMigrations;
+                List<MigrationInfo> appliedMigrations;
 
                 if (con.TableExists("VersionInfo"))
                 {
-                    appliedMigrations = con.Select<VersionInfo>();
+                    appliedMigrations = con.Select<MigrationInfo>();
                 }
                 else
                 {
-                    appliedMigrations = new List<VersionInfo>();
+                    appliedMigrations = new List<MigrationInfo>();
                 }
 
-                return new VersionInfoResponse
+                return new MigrationInfoResponse
                 {
                     Migrations = appliedMigrations
                         .Concat(availableMigrations)
                         .ToLookup(v => v.Version)
-                        .Select(g => g.Aggregate((v1, v2) => new VersionInfo
+                        .Select(g => g.Aggregate((v1, v2) => new MigrationInfo
                         {
                             Version = v1.Version,
                             Description = v1.Description ?? v2.Description,
@@ -71,7 +72,7 @@ namespace FluentMigrator.ServiceStack
         {
             using (var writer = new StreamWriter(Response.OutputStream) { AutoFlush = true })
             {
-                Migrate(writer, request.PreviewOnly, false, request.Version);                
+                Migrate(writer, request.PreviewOnly, false, request.Version, request.ConnectionString);               
             }
             Response.Close();
         }
@@ -80,22 +81,22 @@ namespace FluentMigrator.ServiceStack
         {
             using (var writer = new StreamWriter(Response.OutputStream) { AutoFlush = true })
             {
-                Migrate(writer, request.PreviewOnly, true, request.Version);
+                Migrate(writer, request.PreviewOnly, true, request.Version, request.ConnectionString);
             }
 
             Response.Close();
         }
 
-        private void Migrate(TextWriter writer, bool previewOnly, bool rollback, long? version = null)
+        private void Migrate(TextWriter writer, bool previewOnly, bool rollback, long? version = null, string connectionString = null)
         {
-            string connectionString;
+            string cs;
             long highestMigration;
             string task, database;
 
-            using (var con = Database.OpenDbConnection())
+            using (var con = string.IsNullOrEmpty(connectionString) ? Database.OpenDbConnection() : OpenConnection(connectionString))
             {
                 database = DialectToDatabaseString(con.GetDialectProvider());
-                connectionString = con.ConnectionString;
+                cs = con.ConnectionString;
                 highestMigration = con.TableExists("VersionInfo") ? con.Scalar<long>("SELECT MAX(Version) from VersionInfo") : -1;
             }            
 
@@ -117,7 +118,7 @@ namespace FluentMigrator.ServiceStack
             var context = new RunnerContext(announcer)
             {
                 Database = database,
-                Connection = connectionString,
+                Connection = cs,
                 Target = Assembly.Location,
                 PreviewOnly = previewOnly,
                 Task = task,
@@ -136,6 +137,13 @@ namespace FluentMigrator.ServiceStack
                 default:
                     return "sqlserver";
             }
+        }
+
+        private IDbConnection OpenConnection(string connectionString)
+        {
+            var con = OrmLiteConfig.ToDbConnection(connectionString);
+            con.Open();
+            return con;
         }
     }
 }
