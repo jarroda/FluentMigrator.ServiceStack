@@ -2,7 +2,7 @@ var myApp = angular.module('myApp', ['ui.bootstrap', 'luegg.directives', 'ngSani
 
 
 myApp.controller('MigrationCtrl', function ($scope, $http) {
-    var baseUrl = 'http://localhost:62303/migrations/'
+    var baseUrl = '/migrations/'
 
     $scope.migrations = [];
     $scope.info = "";
@@ -36,43 +36,14 @@ myApp.controller('MigrationCtrl', function ($scope, $http) {
 
 
     $scope.getMigrations = function () {
-        delete migrations;
-        var migrations = {};
-
         $http.get(baseUrl).
         success(function (data, status, headers, config) {
-            // this callback will be called asynchronously
-            // when the response is available
-
-            console.log(data);
+            var migrations = data.Migrations;
 
             $scope.info = data.Info;
-
-            //for (var i = 0, len = data.AppliedMigrations.length; i < len; i++) {
-            //    data.AppliedMigrations[i].avaliable = false;
-            //    data.AppliedMigrations[i].applied = true;
-            //    migrations[data.AppliedMigrations[i].Version] = data.AppliedMigrations[i];
-            //}
-            //for (var i = 0, len = data.AvailableMigrations.length; i < len; i++) {
-            //    if (migrations[data.AvailableMigrations[i].Version]) {
-            //        migrations[data.AvailableMigrations[i].Version].avaliable = true;
-
-            //        if (!migrations[data.AvailableMigrations[i].Version].Description) {
-            //            migrations[data.AvailableMigrations[i].Version].Description = data.AvailableMigrations[i].Description;
-            //        }
-            //    }
-            //    else {
-            //        data.AvailableMigrations[i].avaliable = true;
-            //        data.AvailableMigrations[i].applied = false;
-            //        migrations[data.AvailableMigrations[i].Version] = data.AvailableMigrations[i];
-            //    }
-            //}
-            //for (var k in migrations) {
-            //    $scope.migrations.push(migrations[k]);
-            //}
+            $scope.connectedDatabase = data.Database;
 
             $scope.migrations = data.Migrations;
-
             $scope.totalItems = data.Migrations.length;
 
             $scope.UnAppliedMigrationCount = data.Migrations.reduce(function (total, mig) {
