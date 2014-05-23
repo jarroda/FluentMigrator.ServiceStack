@@ -80,7 +80,7 @@ myApp.controller('MigrationCtrl', function ($scope, $http) {
 
         migration.TimeOut = $scope.timeOut * 60;
         migration.PreviewOnly = $scope.previewSelection;
-        migration.ConnectionString = $scope.previewSelection;
+        migration.ConnectionString = $scope.customDatabaseConnString;
 
         if (options == "rollback") {
             console.log("Begining ROLLBACK in " + ((migration.PreviewOnly) ? "PREVIEW" : "LIVE") + " mode with a " + migration.TimeOut + " second timeout.");
