@@ -11,7 +11,7 @@ namespace TestMigrations
     {
         public override void Up()
         {
-            
+            Insert.IntoTable("TestTable").Row(new { Name = "Test" });
         }
 
         public override void Down()
