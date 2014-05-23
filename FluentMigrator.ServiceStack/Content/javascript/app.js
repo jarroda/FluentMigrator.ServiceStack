@@ -76,7 +76,7 @@ myApp.controller('MigrationCtrl', function ($scope, $http) {
             $scope.totalItems = data.Migrations.length;
 
             $scope.UnAppliedMigrationCount = data.Migrations.reduce(function (total, mig) {
-                return mig.AppliedOn ? total + 1 : total
+                return mig.AppliedOn ? total + 1 : total;
             }, 0);
         }).
         error(function (data, status, headers, config) {
