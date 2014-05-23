@@ -82,6 +82,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="content\images\grey_wash_wall.png" />
     <EmbeddedResource Include="content\index.html" />
     <EmbeddedResource Include="content\javascript\angular.min.js" />
     <EmbeddedResource Include="content\javascript\app.js" />
@@ -89,6 +90,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="content\css\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="content\images\light_grey.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

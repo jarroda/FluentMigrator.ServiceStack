@@ -14,6 +14,13 @@
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
 
     <style>
+        .row {
+            margin: 0px inherit;
+        }
+        .jumbotron {
+            padding-bottom: 15px;
+            background-image: url(/migrations/ui/content/images/light_grey.png);
+        }
         #migOutputWell .glyphicon {
             float: right;
             margin: 32px 3px 0px 0px;
@@ -69,7 +76,7 @@
             cursor: pointer;
         }
     </style>
-    <script type="text/javascript" src="content/javascript/angular.min.js"></script>
+    <script type="text/javascript" src="/migrations/ui/content/javascript/angular.min.js"></script>
 </head>
 
 <body ng-app="myApp" ng-controller="MigrationCtrl">
@@ -77,25 +84,8 @@
     <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="container">
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="#">Project name</a>
+
             </div>
-            <div class="navbar-collapse collapse">
-                <form class="navbar-form navbar-right" role="form">
-                    <div class="form-group">
-                        <input type="text" placeholder="Email" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <input type="password" placeholder="Password" class="form-control">
-                    </div>
-                    <button type="submit" class="btn btn-success">Sign in</button>
-                </form>
-            </div><!--/.navbar-collapse -->
         </div>
     </div>
 
@@ -113,8 +103,11 @@
             <div ng-if="info.length" class="alert alert-warning" ng-bind="info"></div>
 
             <div id="migOptionsPanel" class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Connected Database: {{connectedDatabase}}</h3>
+                </div>
+
                 <div class="panel-body">
-                    
                     <div class="migOptionBlock">
                         <h3>Migration Mode:</h3>
                         <div class="btn-group" id="migSelectToggle">
@@ -159,11 +152,11 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="m in migrations | orderBy:'-Version' | startFrom:currentPage*itemsPerPage-itemsPerPage | limitTo:itemsPerPage | filter:searchText " ng-class="{success: m.applied}">
+                            <tr ng-repeat="m in migrations | orderBy:'-Version' | startFrom:currentPage*itemsPerPage-itemsPerPage | limitTo:itemsPerPage | filter:searchText " ng-class="{success: m.AppliedOn}">
                                 <td class="migTableCenter" ng-bind="m.Version"></td>
                                 <td ng-bind="m.AppliedOn  | dateFormat:'MM-dd-yyyy hh:mm a'"></td>
                                 <td ng-bind="m.Description"></td>
-                                <td class="migTableCenter"><button class="btn btn-default btn-xs" ng-click="ApplyMigration(m)" ng-if="m.avaliable">Apply</button></td>
+                                <td class="migTableCenter"><button class="btn btn-default btn-xs" ng-click="ApplyMigration(m)" ng-if="m.IsAvailable">Apply</button></td>
                             </tr>
                         </tbody>
                     </table>
@@ -183,12 +176,12 @@
         <hr>
 
         <footer>
-            <p>&copy; Company 2014</p>
+            <p>FluentMigrator Dashboard Version 1.0</p>
         </footer>
     </div> <!-- /container -->
     
     <!-- Placed at the end of the document so the pages load faster -->
-    <script type="text/javascript" src="content/javascript/app.js"></script>
+    <script type="text/javascript" src="/migrations/ui/content/javascript/app.js"></script>
     <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.11.0.js"></script>
     <script src="//rawgithub.com/Luegg/angularjs-scroll-glue/master/src/scrollglue.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.16/angular-sanitize.js"></script>
