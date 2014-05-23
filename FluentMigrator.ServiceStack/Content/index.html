@@ -17,15 +17,21 @@
         .row {
             margin: 0px inherit;
         }
+        .navbar {
+            background-color: #333;
+            min-height: 30px;
+        }
         .jumbotron {
-            padding-bottom: 15px;
+            padding: 15px;
             background-image: url(/migrations/ui/content/images/grey_wash_wall.png);
             text-align: center;
             color: #f2f2f2;
+            border-bottom: 2px solid #555;
         }
-        .jumbotron p {
-            color: #ccc;
-        }
+            .jumbotron p {
+                color: #ccc;
+                text-shadow: 1px 3px 2px rgba(0,0,0,0.3);
+            }
         .jumbotron h1 {
             text-shadow: 2px 4px 3px rgba(0,0,0,0.3);
         }
@@ -101,13 +107,6 @@
 
 <body ng-app="myApp" ng-controller="MigrationCtrl">
 
-    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-        <div class="container">
-            <div class="navbar-header">
-
-            </div>
-        </div>
-    </div>
 
     <!-- Main jumbotron for a primary marketing message or call to action -->
     <div class="jumbotron">
@@ -146,7 +145,7 @@
                             <button type="button" class="btn btn-default" ng-click="updatePreviewSelection(0)" ng-class="{'btn-danger active': !previewSelection}">Live</button>
                         </div>
                     </div>
-
+                    
                     <div class="migOptionBlock">
                         <h3>Timeout:</h3>
                         <select id="migTimeoutSelect" class="form-control" ng-model="timeOut">
@@ -166,7 +165,7 @@
 
             <div id="migAvailableMigrations" class="col-md-5">
                 <button class="applyAllButton btn btn-primary" ng-click="ApplyMigration()" ng-if="UnAppliedMigrationCount">Apply All <span class="badge" ng-bind="UnAppliedMigrationCount"></span></button>
-                <button class="applyRollback btn btn-default" ng-click="ApplyMigration(null, 'rollback')">Roll Back</span></button>
+                <button class="applyRollback btn btn-default" ng-if="!previewSelection" ng-click="ApplyMigration(null, 'rollback')">Roll Back</button>
                 <h2>Available Migrations</h2>
                 <div class="table-responsive">
                     <table id="migListTable" class="table table-bordered table-condensed">

@@ -39,13 +39,12 @@ myApp.controller('MigrationCtrl', function ($scope, $http) {
         $scope.displayConnStringOption = !$scope.displayConnStringOption;
     };
     $scope.applyCustomDatabaseConnString = function () {
-        // TODO: Figure out how to wedge the connection string into the getMigration() requests
-        alert($scope.customDatabaseConnString);
         $scope.getMigrations();
     };
 
 
     $scope.getMigrations = function () {
+        //TODO: Use a post here if we are using a custom database connection string
         $http.get(baseUrl).
         success(function (data, status, headers, config) {
             var migrations = data.Migrations;
@@ -81,6 +80,7 @@ myApp.controller('MigrationCtrl', function ($scope, $http) {
 
         migration.TimeOut = $scope.timeOut * 60;
         migration.PreviewOnly = $scope.previewSelection;
+        migration.ConnectionString = $scope.previewSelection;
 
         if (options == "rollback") {
             console.log("Begining ROLLBACK in " + ((migration.PreviewOnly) ? "PREVIEW" : "LIVE") + " mode with a " + migration.TimeOut + " second timeout.");
