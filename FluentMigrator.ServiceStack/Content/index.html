@@ -17,10 +17,25 @@
         .row {
             margin: 0px inherit;
         }
-        .jumbotron {
-            padding-bottom: 15px;
-            background-image: url(/migrations/ui/content/images/light_grey.png);
+        .navbar {
+            background-color: #333;
+            min-height: 30px;
         }
+        .jumbotron {
+            padding: 15px;
+            background-image: url(/migrations/ui/content/images/grey_wash_wall.png);
+            text-align: center;
+            color: #f2f2f2;
+            border-bottom: 2px solid #555;
+        }
+            .jumbotron p {
+                color: #ccc;
+                text-shadow: 1px 3px 2px rgba(0,0,0,0.3);
+            }
+        .jumbotron h1 {
+            text-shadow: 2px 4px 3px rgba(0,0,0,0.3);
+        }
+
         #migOutputWell .glyphicon {
             float: right;
             margin: 32px 3px 0px 0px;
@@ -41,6 +56,11 @@
         }
         #migListTable th {
             text-align: center;
+        }
+        #migAvailableMigrations .applyRollback {
+            float: right;
+            margin-top: 20px;
+            margin-right: 5px;
         }
         #migAvailableMigrations .applyAllButton {
             float: right;
@@ -64,10 +84,16 @@
         #migTimeoutSelect {
             display: inline-block;
             width: 200px;
+        }
+        .migDBOptionsCog {
+            cursor: pointer;
         } 
         .migOptionBlock {
             margin-left: 18px;
             float: left;
+        }
+        .migConnectionString {
+            margin-bottom: 15px;
         } 
         .clear {
             clear: both;
@@ -81,13 +107,6 @@
 
 <body ng-app="myApp" ng-controller="MigrationCtrl">
 
-    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-        <div class="container">
-            <div class="navbar-header">
-
-            </div>
-        </div>
-    </div>
 
     <!-- Main jumbotron for a primary marketing message or call to action -->
     <div class="jumbotron">
@@ -104,10 +123,21 @@
 
             <div id="migOptionsPanel" class="panel panel-default">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Connected Database: {{connectedDatabase}}</h3>
+                    <h3 class="panel-title" ng-bind-html="connectedDatabaseString"></h3>
+                    <span class="migDBOptionsCog glyphicon glyphicon-cog" ng-click="showConnStringPanel()"></span>
                 </div>
 
                 <div class="panel-body">
+
+                    <form ng-submit="applyCustomDatabaseConnString()">
+                        <div class="migConnectionString input-group" ng-show="displayConnStringOption">
+                            <input type="text" class="form-control" placeholder="Custom Database Connection String" ng-model="customDatabaseConnString">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="button" ng-click="applyCustomDatabaseConnString()">Go!</button>
+                            </span>
+                        </div>
+                    </form>
+
                     <div class="migOptionBlock">
                         <h3>Migration Mode:</h3>
                         <div class="btn-group" id="migSelectToggle">
@@ -115,7 +145,7 @@
                             <button type="button" class="btn btn-default" ng-click="updatePreviewSelection(0)" ng-class="{'btn-danger active': !previewSelection}">Live</button>
                         </div>
                     </div>
-
+                    
                     <div class="migOptionBlock">
                         <h3>Timeout:</h3>
                         <select id="migTimeoutSelect" class="form-control" ng-model="timeOut">
@@ -135,9 +165,10 @@
 
             <div id="migAvailableMigrations" class="col-md-5">
                 <button class="applyAllButton btn btn-primary" ng-click="ApplyMigration()" ng-if="UnAppliedMigrationCount">Apply All <span class="badge" ng-bind="UnAppliedMigrationCount"></span></button>
+                <button class="applyRollback btn btn-default" ng-if="!previewSelection" ng-click="ApplyMigration(null, 'rollback')">Roll Back</button>
                 <h2>Available Migrations</h2>
                 <div class="table-responsive">
-                    <table id="migListTable" class="table table-striped table-bordered table-condensed">
+                    <table id="migListTable" class="table table-bordered table-condensed">
                         <thead>
                             <!--<tr>
                         <th>Migrations</th>
