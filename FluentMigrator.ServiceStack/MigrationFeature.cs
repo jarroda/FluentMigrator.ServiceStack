@@ -13,7 +13,7 @@ namespace FluentMigrator.ServiceStack
 {
     public sealed class MigrationFeature : IPlugin
     {
-        private const string PathPrefix = "/migrations/ui";
+        private const string PathPrefix = "/migrations-ui";
 
         public MigrationFeature(Assembly migrationAssembly)
         {
