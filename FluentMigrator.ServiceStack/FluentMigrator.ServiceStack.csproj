@@ -83,6 +83,7 @@
     <EmbeddedResource Include="content\fonts\glyphicons-halflings-regular.eot" />
     <EmbeddedResource Include="content\fonts\glyphicons-halflings-regular.ttf" />
     <EmbeddedResource Include="content\fonts\glyphicons-halflings-regular.woff" />
+    <None Include="FluentMigrator.ServiceStack.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

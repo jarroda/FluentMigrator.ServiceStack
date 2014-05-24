@@ -2,7 +2,7 @@ var myApp = angular.module('myApp', ['ui.bootstrap', 'luegg.directives', 'ngSani
 
 
 myApp.controller('MigrationCtrl', function ($scope, $http) {
-    var baseUrl = '/migrations/'
+    var baseUrl = 'migrations/'
 
     $scope.migrations = [];
     $scope.info = "";

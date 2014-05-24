@@ -13,6 +13,7 @@ namespace FluentMigrator.ServiceStack.ServiceModel
 
         public string Description { get; set; }
 
+        [Ignore]
         public bool IsAvailable { get; set; }
 
         public override bool Equals(object obj)
