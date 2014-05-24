@@ -80,9 +80,6 @@
     <Compile Include="ServiceModel\MigrationInfoResponse.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="content\fonts\glyphicons-halflings-regular.eot" />
-    <EmbeddedResource Include="content\fonts\glyphicons-halflings-regular.ttf" />
-    <EmbeddedResource Include="content\fonts\glyphicons-halflings-regular.woff" />
     <None Include="FluentMigrator.ServiceStack.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>
@@ -90,9 +87,6 @@
     <EmbeddedResource Include="content\index.html" />
     <EmbeddedResource Include="content\javascript\angular.min.js" />
     <EmbeddedResource Include="content\javascript\app.js" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="content\fonts\glyphicons-halflings-regular.svg" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="content\javascript\ui-bootstrap-tpls-0.11.0.min.js" />

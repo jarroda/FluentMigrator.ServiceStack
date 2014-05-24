@@ -28,15 +28,19 @@
             color: #f2f2f2;
             border-bottom: 2px solid #555;
         }
-            .jumbotron p {
-                color: #ccc;
-                text-shadow: 1px 3px 2px rgba(0,0,0,0.3);
-            }
+        .jumbotron p {
+            color: #ccc;
+            text-shadow: 1px 3px 2px rgba(0,0,0,0.3);
+        }
         .jumbotron h1 {
             text-shadow: 2px 4px 3px rgba(0,0,0,0.3);
         }
-
-        #migOutputWell .glyphicon {
+        .icon {
+            height: 16px;
+            width: 16px;
+            display: inline-block;
+        }
+        #migOutputWell .icon {
             float: right;
             margin: 32px 3px 0px 0px;
             cursor: pointer;
@@ -86,8 +90,13 @@
             width: 200px;
         }
         .migDBOptionsCog {
+            margin-bottom: -2px;
             cursor: pointer;
-        } 
+            background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEwAACxMBAJqcGAAAAONJREFUOI2Vk00OAUEQhT+zkiC4gz2CcRpxAJO4gMRJLHAIq7Hxk7iQzGywmG5502qESiqpqX71+lVNNVRbDDydD7/g3tYC+vK9E4KN5AdAwyq+OvAZWAGZENxdzmNSoK4EYwH/4g+gF6q4/UFw9EWREBwkzoEE6AJtF+dynurNMbB3AH/DIpTnSPx5RjHkmAqJHYOgbWEjAwjFkEKrWcAImEoL3mYGdi5xri14W1PuMXGyO8CS8oxWlpoLv//Gc1g8+qPYu659aZVPfK5y5nIXwTRDFd8e01byA6vYMn3OkyrQC5Q1dBrXQiO8AAAAAElFTkSuQmCC);
+        }
+        .outputIcon {
+            background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEwAACxMBAJqcGAAAARJJREFUOI2N081Kw0AUxfEfKLbuxD6ELloV7EOqiIq2Sp9FxAcQ/ECpdCf4DGpdNHExNzWmTe2FgWTm/Cdn7pwwW7u4wgjfMUa4xM4c/bSaGCBDXjMy9NGYB9+G6BNH2AvhWjwf4ys0N8FMaxALb9iucbiJ55KbfvnMGT6wtQC+D/AxnGTokBqW42AJ+A4bOIn3HqnDebHbHPihAsN+zL2SrinHagVu1cCk5uYYFxtkWFkShvXyBtUjtKRG1cHQjfUhKWE5DpeE4Sw0F6R4ZlKAXpaAO2F9gnYx2fcbkKd/4PfQnZcXGlI8i8acSlfVkBrWDdvj0FxLEf9TzXCy6GeaxJdn4KrNnhSScYyh1LB2VfwD/8NuBwVwSvsAAAAASUVORK5CYII=);
+        }
         .migOptionBlock {
             margin-left: 18px;
             float: left;
@@ -124,7 +133,7 @@
             <div id="migOptionsPanel" class="panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title" ng-bind-html="connectedDatabaseString"></h3>
-                    <span class="migDBOptionsCog glyphicon glyphicon-cog" ng-click="showConnStringPanel()"></span>
+                    <span class="migDBOptionsCog icon" ng-click="showConnStringPanel()"></span>
                 </div>
 
                 <div class="panel-body">
@@ -197,7 +206,7 @@
                 </div>
             </div>
             <div id="migOutputWell" class="col-md-7">
-                <span alt="Clear Output" class="glyphicon glyphicon-ban-circle" ng-click="ClearOutput();"></span>
+                <span alt="Clear Output" class="icon outputIcon" ng-click="ClearOutput();"></span>
                 <h2>Console Output</h2>
                 <div class="clear"></div>
                 <p scroll-glue class="well" ng-bind-html="output"></p>
