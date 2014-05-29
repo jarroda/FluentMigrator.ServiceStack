@@ -21,7 +21,19 @@ namespace TestMigrations
         public override void Down()
         {
             Delete.ForeignKey("fk_TestTable2_TestTableId_TestTable_Id").OnTable("TestTable2");
-            Delete.Column("Name2").FromTable("TestTable2");
+
+            // Can't delete columns in Sqlite.
+            Execute.Sql(@"
+            CREATE TEMPORARY TABLE t1_backup(Id,Name,TestTableId);
+            INSERT INTO t1_backup SELECT Id,Name,TestTableId FROM TestTable2;
+            DROP TABLE TestTable2;
+            CREATE TABLE TestTable2(Id,Name,TestTableId);
+            INSERT INTO TestTable2 SELECT Id,Name,TestTableId FROM t1_backup;
+            DROP TABLE t1_backup;");
+
+            // Re-create index.
+            Create.Index("ix_Name").OnTable("TestTable2").OnColumn("Name").Ascending()
+                .WithOptions().NonClustered();
         }
     }
 }

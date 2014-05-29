@@ -42,8 +42,6 @@
         }
         #migOutputWell .icon {
             float: right;
-            margin: 32px 3px 0px 0px;
-            cursor: pointer;
         }
         #migOutputWell h2 {
             float: left;
@@ -83,8 +81,6 @@
             margin: 0px 5px 0px 0px;
             display: inline-block;
         }
-        #migOptionsPanel #migSelectToggle {
-        }
         #migTimeoutSelect {
             display: inline-block;
             width: 200px;
@@ -95,7 +91,13 @@
             background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEwAACxMBAJqcGAAAAONJREFUOI2Vk00OAUEQhT+zkiC4gz2CcRpxAJO4gMRJLHAIq7Hxk7iQzGywmG5502qESiqpqX71+lVNNVRbDDydD7/g3tYC+vK9E4KN5AdAwyq+OvAZWAGZENxdzmNSoK4EYwH/4g+gF6q4/UFw9EWREBwkzoEE6AJtF+dynurNMbB3AH/DIpTnSPx5RjHkmAqJHYOgbWEjAwjFkEKrWcAImEoL3mYGdi5xri14W1PuMXGyO8CS8oxWlpoLv//Gc1g8+qPYu659aZVPfK5y5nIXwTRDFd8e01byA6vYMn3OkyrQC5Q1dBrXQiO8AAAAAElFTkSuQmCC);
         }
         .outputIcon {
+            margin: 32px 3px 0px 0px;
+            cursor: pointer;
             background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEwAACxMBAJqcGAAAARJJREFUOI2N081Kw0AUxfEfKLbuxD6ELloV7EOqiIq2Sp9FxAcQ/ECpdCf4DGpdNHExNzWmTe2FgWTm/Cdn7pwwW7u4wgjfMUa4xM4c/bSaGCBDXjMy9NGYB9+G6BNH2AvhWjwf4ys0N8FMaxALb9iucbiJ55KbfvnMGT6wtQC+D/AxnGTokBqW42AJ+A4bOIn3HqnDebHbHPihAsN+zL2SrinHagVu1cCk5uYYFxtkWFkShvXyBtUjtKRG1cHQjfUhKWE5DpeE4Sw0F6R4ZlKAXpaAO2F9gnYx2fcbkKd/4PfQnZcXGlI8i8acSlfVkBrWDdvj0FxLEf9TzXCy6GeaxJdn4KrNnhSScYyh1LB2VfwD/8NuBwVwSvsAAAAASUVORK5CYII=);
+        }
+        .spinner {
+            margin: 32px 10px 0px 0px;
+            background-image: url(data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH+GkNyZWF0ZWQgd2l0aCBhamF4bG9hZC5pbmZvACH5BAAKAAAAIf8LTkVUU0NBUEUyLjADAQAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQACgABACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkEAAoAAgAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkEAAoAAwAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkEAAoABAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQACgAFACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQACgAGACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAAKAAcALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==);
         }
         .migOptionBlock {
             margin-left: 18px;
@@ -115,8 +117,6 @@
 </head>
 
 <body ng-app="myApp" ng-controller="MigrationCtrl">
-
-
     <!-- Main jumbotron for a primary marketing message or call to action -->
     <div class="jumbotron">
         <div class="container">
@@ -159,14 +159,10 @@
                         <h3>Timeout:</h3>
                         <select id="migTimeoutSelect" class="form-control" ng-model="timeOut">
                             <option value="1">1 Minute</option>
-                            <option value="2">2 Minutes</option>
-                            <option value="3">3 Minutes</option>
                             <option value="5">5 Minutes</option>
-                            <option value="8">8 Minutes</option>
-                            <option value="13">13 Minutes</option>
-                            <option value="21">21 Minutes</option>
-                            <option value="34">34 Minutes</option>
-                            <option value="55">55 Minutes</option>
+                            <option value="10">10 Minutes</option>
+                            <option value="30">30 Minutes</option>
+                            <option value="60">60 Minutes</option>
                         </select>
                     </div>
                 </div>
@@ -205,8 +201,9 @@
                     </div>
                 </div>
             </div>
-            <div id="migOutputWell" class="col-md-7">
+            <div id="migOutputWell" class="col-md-7">                
                 <span alt="Clear Output" class="icon outputIcon" ng-click="ClearOutput();"></span>
+                <span class="icon spinner" ng-show="isBusy"></span>
                 <h2>Console Output</h2>
                 <div class="clear"></div>
                 <p scroll-glue class="well" ng-bind-html="output"></p>

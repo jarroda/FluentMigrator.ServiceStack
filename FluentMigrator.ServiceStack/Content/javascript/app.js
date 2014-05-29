@@ -11,8 +11,12 @@ myApp.controller('MigrationCtrl', function ($scope, $http) {
     $scope.previewSelection = 1;
     $scope.displayConnStringOption = 0;
     $scope.customDatabaseConnString = null;
-
+    $scope.isBusy = false;
     $scope.timeOut = 5;
+    $scope.maxSize = 5;
+    $scope.itemsPerPage = 15;
+    $scope.totalItems = 0;
+    $scope.currentPage = 1;
 
     $scope.setPage = function (pageNo) {
         $scope.currentPage = pageNo;
@@ -21,11 +25,6 @@ myApp.controller('MigrationCtrl', function ($scope, $http) {
     $scope.pageChanged = function () {
         console.log('Page changed to: ' + $scope.currentPage);
     };
-
-    $scope.maxSize = 5;
-    $scope.itemsPerPage = 15;
-    $scope.totalItems = 0;
-    $scope.currentPage = 1;
 
     $scope.appendOutput = function (data) {
         $scope.output += "<strong>This is a test</strong> of output appending and will be used to make the design work with variable data!\n";
@@ -42,38 +41,35 @@ myApp.controller('MigrationCtrl', function ($scope, $http) {
         $scope.getMigrations();
     };
 
-
     $scope.getMigrations = function () {
-        //TODO: Use a post here if we are using a custom database connection string
-        $http.get(baseUrl, { params: { connectionString: $scope.customDatabaseConnString } }).
-        success(function (data, status, headers, config) {
-            var migrations = data.Migrations;
+        $http.get(baseUrl, { params: { connectionString: $scope.customDatabaseConnString } })
+            .success(function (data, status, headers, config) {
+                var migrations = data.Migrations;
 
-            $scope.info = data.Info;
-            $scope.connectedDatabase = data.Database;
-            $scope.connectedDatabaseString = "Connected to <strong>" + data.Database + "</strong> database";
+                $scope.info = data.Info;
+                $scope.connectedDatabase = data.Database;
+                $scope.connectedDatabaseString = "Connected to <strong>" + data.Database + "</strong> database";
 
-            $scope.migrations = data.Migrations;
-            $scope.totalItems = data.Migrations.length;
+                $scope.migrations = data.Migrations;
+                $scope.totalItems = data.Migrations.length;
 
-            $scope.UnAppliedMigrationCount = data.Migrations.reduce(function (total, mig) {
-                return mig.AppliedOn ? total : total + 1;
-            }, 0);
-        }).
-        error(function (data, status, headers, config) {
-            console.log(data);
-        });
+                $scope.UnAppliedMigrationCount = data.Migrations.reduce(function (total, mig) {
+                    return mig.AppliedOn ? total : total + 1;
+                }, 0);
+            })
+            .error(function (data, status, headers, config) {
+                console.log(data);
+            });
     }
 
-    $scope.ApplyMigration = function (migration, options) {
+    $scope.ApplyMigration = function (migration, options) {        
+        $scope.isBusy = true;
+        $scope.output = "";
         var requestURL;
 
-        if (migration != null)
-        {
+        if (migration != null) {
             requestURL = baseUrl + migration.Version;
-        }
-        else
-        {
+        } else {
             var migration = {};
             requestURL = baseUrl;
         }
@@ -86,20 +82,23 @@ myApp.controller('MigrationCtrl', function ($scope, $http) {
             console.log("Begining ROLLBACK in " + ((migration.PreviewOnly) ? "PREVIEW" : "LIVE") + " mode with a " + migration.TimeOut + " second timeout.");
             $http.delete(requestURL, migration).
             success(function (data, status, headers, config) {
+                $scope.isBusy = false;
                 $scope.output = data;
                 $scope.getMigrations();
             }).error(function (data, status, headers, config) {
+                $scope.isBusy = false;
                 $scope.output = data;
                 $scope.getMigrations();
             });
-        }
-        else {
+        } else {
             console.log("Begining migration to " + ((migration.Version) ? "VERSION " + migration.Version : "HEAD") + " in " + ((migration.PreviewOnly) ? "PREVIEW" : "LIVE") + " mode with a " + migration.TimeOut + " second timeout.");
             $http.post(requestURL, migration).
             success(function (data, status, headers, config) {
+                $scope.isBusy = false;
                 $scope.output = data;
                 $scope.getMigrations();
             }).error(function (data, status, headers, config) {
+                $scope.isBusy = false;
                 $scope.output = data;
                 $scope.getMigrations();
             });
@@ -115,16 +114,7 @@ myApp.controller('MigrationCtrl', function ($scope, $http) {
 
 myApp.filter('dateFormat', function ($filter) {
     return function (utcDateString, format) {
-        if(utcDateString != null)
-        {
-            date = new Date(parseInt(utcDateString.substr(6)));
-            return $filter('date')(date, format);
-        }
-        else
-        {
-            return "";
-        }
-        
+        return utcDateString != null ? $filter('date')(new Date(parseInt(utcDateString.substr(6))), format) : "";
     };
 });
 
