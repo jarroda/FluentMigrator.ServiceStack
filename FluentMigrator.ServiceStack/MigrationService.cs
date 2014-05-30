@@ -1,14 +1,18 @@
-﻿using FluentMigrator.Runner.Announcers;
+﻿using FluentMigrator.Runner;
+using FluentMigrator.Runner.Announcers;
 using FluentMigrator.Runner.Initialization;
 using FluentMigrator.ServiceStack.ServiceModel;
 using ServiceStack.OrmLite;
 using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace FluentMigrator.ServiceStack
 {
@@ -70,16 +74,17 @@ namespace FluentMigrator.ServiceStack
 
         public void Post(Migrate request)
         {
-            using (var writer = new StreamWriter(Response.OutputStream) { AutoFlush = true })
+            using (var writer = Response.GetChunkedWriter())
             {
-                Migrate(writer, request.PreviewOnly, false, request.Version, request.ConnectionString);               
+                Migrate(writer, request.PreviewOnly, false, request.Version, request.ConnectionString);
             }
+
             Response.Close();
         }
 
         public void Delete(Migrate request)
         {
-            using (var writer = new StreamWriter(Response.OutputStream) { AutoFlush = true })
+            using (var writer = Response.GetChunkedWriter())
             {
                 Migrate(writer, request.PreviewOnly, true, request.Version, request.ConnectionString);
             }

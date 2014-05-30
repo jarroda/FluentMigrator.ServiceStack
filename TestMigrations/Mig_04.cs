@@ -13,13 +13,13 @@ namespace TestMigrations
         public override void Up()
         {
             Insert.IntoTable("TestTable").Row(new { Name = "Test1" });
-            Thread.Sleep(1000);
+            Thread.Sleep(2000);
             Insert.IntoTable("TestTable").Row(new { Name = "Test2" });
-            Thread.Sleep(1000);
+            Thread.Sleep(2000);
             Insert.IntoTable("TestTable").Row(new { Name = "Test3" });
-            Thread.Sleep(1000);
+            Thread.Sleep(2000);
             Insert.IntoTable("TestTable").Row(new { Name = "Test4" });
-            Thread.Sleep(1000);
+            Thread.Sleep(2000);
             Insert.IntoTable("TestTable").Row(new { Name = "Test5" });
         }
 

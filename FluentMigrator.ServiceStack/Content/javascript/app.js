@@ -74,34 +74,35 @@ myApp.controller('MigrationCtrl', function ($scope, $http) {
             requestURL = baseUrl;
         }
 
-        migration.TimeoutSeconds = $scope.timeOut * 60;
-        migration.PreviewOnly = $scope.previewSelection;
-        migration.ConnectionString = $scope.customDatabaseConnString;
+        var xhr = new XMLHttpRequest();
+        xhr.onprogress = function () {
+            $scope.output = xhr.responseText;
+            $scope.$apply();
+        }
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4) {
+                $scope.output = xhr.responseText;
+                $scope.isBusy = false;
+                $scope.$apply();
+                $scope.getMigrations();
+            }
+        }
+
+        var params = "TimeoutSeconds=" + ($scope.timeOut * 60) + "&PreviewOnly=" + $scope.previewSelection;
+        if($scope.customDatabaseConnString) params += "&ConnectionString=" + encodeURIComponent($scope.customDatabaseConnString);
+        params = params.replace(/%20/g, '+');
 
         if (options == "rollback") {
-            console.log("Begining ROLLBACK in " + ((migration.PreviewOnly) ? "PREVIEW" : "LIVE") + " mode with a " + migration.TimeOut + " second timeout.");
-            $http.delete(requestURL, migration).
-            success(function (data, status, headers, config) {
-                $scope.isBusy = false;
-                $scope.output = data;
-                $scope.getMigrations();
-            }).error(function (data, status, headers, config) {
-                $scope.isBusy = false;
-                $scope.output = data;
-                $scope.getMigrations();
-            });
-        } else {
-            console.log("Begining migration to " + ((migration.Version) ? "VERSION " + migration.Version : "HEAD") + " in " + ((migration.PreviewOnly) ? "PREVIEW" : "LIVE") + " mode with a " + migration.TimeOut + " second timeout.");
-            $http.post(requestURL, migration).
-            success(function (data, status, headers, config) {
-                $scope.isBusy = false;
-                $scope.output = data;
-                $scope.getMigrations();
-            }).error(function (data, status, headers, config) {
-                $scope.isBusy = false;
-                $scope.output = data;
-                $scope.getMigrations();
-            });
+            console.log("Begining ROLLBACK with params: " + params);
+            xhr.open("DELETE", requestURL, true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.send(params);
+        }
+        else {
+            console.log("Begining migration with params: " + params);
+            xhr.open("POST", requestURL, true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.send(params);
         }
     }
 
