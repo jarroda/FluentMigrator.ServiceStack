@@ -1,10 +1,15 @@
-﻿using FluentMigrator.Runner;
+﻿#if V3
+using ServiceStack.ServiceHost;
+using ServiceStack.ServiceInterface;
+#else
+using ServiceStack.Data;
+#endif
+using FluentMigrator.Runner;
 using FluentMigrator.Runner.Announcers;
 using FluentMigrator.Runner.Initialization;
 using FluentMigrator.ServiceStack.ServiceModel;
+using ServiceStack;
 using ServiceStack.OrmLite;
-using ServiceStack.ServiceHost;
-using ServiceStack.ServiceInterface;
 using System;
 using System.Collections.Generic;
 using System.Data;

@@ -1,6 +1,9 @@
-﻿using ServiceStack.DataAnnotations;
-using ServiceStack.ServiceHost;
+﻿using ServiceStack;
+using ServiceStack.DataAnnotations;
 using System;
+#if V3
+using ServiceStack.ServiceHost;
+#endif
 
 namespace FluentMigrator.ServiceStack.ServiceModel
 {

@@ -1,13 +1,14 @@
-﻿using ServiceStack;
+﻿#if V3
 using ServiceStack.Common.Web;
 using ServiceStack.WebHost.Endpoints;
 using ServiceStack.WebHost.Endpoints.Support;
+#endif
+using ServiceStack;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-
 
 namespace FluentMigrator.ServiceStack
 {

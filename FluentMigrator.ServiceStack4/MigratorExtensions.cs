@@ -1,4 +1,9 @@
-﻿using ServiceStack.ServiceHost;
+﻿#if V3
+using ServiceStack.ServiceHost;
+using IResponse = ServiceStack.ServiceHost.IHttpResponse;
+#else
+using ServiceStack.Web;
+#endif
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -11,7 +16,7 @@ namespace FluentMigrator.ServiceStack
 {
     public static class MigratorExtensions
     {
-        public static TextWriter GetChunkedWriter(this IHttpResponse response)
+        public static TextWriter GetChunkedWriter(this IResponse response)
         {
             if (response.OriginalResponse is HttpResponse)
             {

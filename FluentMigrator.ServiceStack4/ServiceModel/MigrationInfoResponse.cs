@@ -1,5 +1,9 @@
-﻿using ServiceStack.ServiceInterface.ServiceModel;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using ServiceStack;
+#if V3
+using ServiceStack.ServiceHost;
+using ServiceStack.ServiceInterface.ServiceModel;
+#endif
 
 namespace FluentMigrator.ServiceStack.ServiceModel
 {

@@ -16,6 +16,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{17BDED
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentMigrator.ServiceStack.TestV4", "FluentMigrator.ServiceStack.TestV4\FluentMigrator.ServiceStack.TestV4.csproj", "{8C1A0B80-5AA8-4604-9A6B-407BBC00C897}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentMigrator.ServiceStack4", "FluentMigrator.ServiceStack4\FluentMigrator.ServiceStack4.csproj", "{9B5E2247-8256-40CF-94CA-942310962D52}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -34,6 +38,14 @@ Global
 		{B63A71A3-7562-44B4-979E-6844EE32C28E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B63A71A3-7562-44B4-979E-6844EE32C28E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B63A71A3-7562-44B4-979E-6844EE32C28E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C1A0B80-5AA8-4604-9A6B-407BBC00C897}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C1A0B80-5AA8-4604-9A6B-407BBC00C897}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C1A0B80-5AA8-4604-9A6B-407BBC00C897}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C1A0B80-5AA8-4604-9A6B-407BBC00C897}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B5E2247-8256-40CF-94CA-942310962D52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B5E2247-8256-40CF-94CA-942310962D52}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B5E2247-8256-40CF-94CA-942310962D52}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B5E2247-8256-40CF-94CA-942310962D52}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
