@@ -6,9 +6,9 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("FluentMigrator.ServiceStack4")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("A ServiceStack 4 plugin providing an interface for FluentMigrator database migrations.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Jarrod Alexander")]
 [assembly: AssemblyProduct("FluentMigrator.ServiceStack4")]
 [assembly: AssemblyCopyright("Copyright ©  2014")]
 [assembly: AssemblyTrademark("")]
