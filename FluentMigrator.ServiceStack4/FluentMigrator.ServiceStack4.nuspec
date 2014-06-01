@@ -17,7 +17,7 @@
       <dependency id="FluentMigrator.Runner" version="1.1.1.26" />
     </dependencies>
     <releaseNotes>
-      This release adds support for chunking the migration console output and a busy indicator when migrations are running.
+      This release adds support for ServiceStack 4
     </releaseNotes>
   </metadata>
 </package>
