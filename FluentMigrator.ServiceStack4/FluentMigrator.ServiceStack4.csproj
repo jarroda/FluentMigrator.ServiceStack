@@ -78,6 +78,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="FluentMigrator.ServiceStack4.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

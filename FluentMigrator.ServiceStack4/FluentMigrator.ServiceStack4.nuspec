@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <summary>$description$</summary>
+    <authors>$author$</authors>
+    <owners>$author$</owners>
+    <licenseUrl>https://github.com/jarroda/FluentMigrator.ServiceStack/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/jarroda/FluentMigrator.ServiceStack</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>A ServiceStack plugin providing an interface for FluentMigrator database migrations.</description>
+    <copyright>Copyright 2014</copyright>
+    <tags>servicestack fluentmigrator</tags>
+    <dependencies>
+      <dependency id="ServiceStack" version="[4,)" />
+      <dependency id="FluentMigrator.Runner" version="1.1.1.26" />
+    </dependencies>
+    <releaseNotes>
+      This release adds support for chunking the migration console output and a busy indicator when migrations are running.
+    </releaseNotes>
+  </metadata>
+</package>
