@@ -144,6 +144,8 @@ namespace FluentMigrator.ServiceStack
             {
                 case "SqliteOrmLiteDialectProvider":
                     return "sqlite";
+                case "MySqlDialectProvider":
+                    return "mysql";
                 default:
                     return "sqlserver";
             }
